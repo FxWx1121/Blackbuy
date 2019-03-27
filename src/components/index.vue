@@ -157,7 +157,7 @@
                   </div>
                   <div class="txt-box">
                     <a href="/goods/show-98.html">{{item.title}}</a>
-                    <span>{{item.add_time}}</span>
+                    <span>{{item.add_time | formatTime }}</span>
                   </div>
                 </li>
               </ul>
@@ -615,14 +615,26 @@
 <script>
 //导入axios
 import axios from "axios";
+import moment from "moment";
 export default{
     name:"首页",
     //数据
     data(){
         return{
+            //分类数据
         catelist:[],
+        //轮播图
         sliderlist:[],
+        //热卖
         toplist:[]
+        }
+    },
+    //过滤器
+    filters:{
+        //value过滤数据
+        formatTime(value){
+            //处理数据
+            return moment(value).format('YYYY-MM-DD')
         }
     },
     created() {
