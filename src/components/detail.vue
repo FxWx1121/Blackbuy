@@ -95,15 +95,15 @@
               >
                 <ul>
                   <li>
-                    <a href="javascript:;" class="selected">商品介绍</a>
+                    <a @click="index=1" :class="{selected:index==1}" href="javascript:;">商品介绍</a>
                   </li>
                   <li>
-                    <a href="javascript:;">商品评论</a>
+                    <a @click="index=2" :class="{selected:index==2}" href="javascript:;">商品评论</a>
                   </li>
                 </ul>
               </div>
-              <div class="tab-content entry" style="display: block;">内容</div>
-              <div class="tab-content" style="display: block;">
+              <div class="tab-content entry" v-show="index==1" v-html="goodsinfo.content"></div>
+              <div class="tab-content"  v-show="index==2">
                 <div class="comment-box">
                   <div id="commentForm" name="commentForm" class="form-box">
                     <div class="avatar-box">
@@ -297,7 +297,9 @@ import axios from "axios";
 export default {
 data(){
     return{
-        goodsinfo:{}
+        goodsinfo:{},
+        //tab索引
+        index:1
     };
 },
 //获取数据
