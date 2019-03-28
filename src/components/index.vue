@@ -212,7 +212,7 @@
 
 <script>
 //导入axios
-import axios from "axios";
+// import axios from "axios";
 import moment from "moment";
 export default {
   name: "首页",

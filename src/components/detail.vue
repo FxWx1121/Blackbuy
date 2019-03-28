@@ -179,14 +179,17 @@
                 <ul class="side-img-list">
                   <li v-for="item in hotgoodslist">
                     <div class="img-box">
-                      <a href="#/site/goodsinfo/90" class>
+                      <!-- <a href="#/site/goodsinfo/90" class> -->
+                      <router-link :to="'/detail/'+item.id">
                         <img
                           :src=item.img_url
                         >
-                      </a>
+                      <!-- </a> -->
+                      </router-link>
                     </div>
                     <div class="txt-box">
-                      <a href="#/site/goodsinfo/90" class>{{item.title}}</a>
+                      <router-link :to="'/detail/'+item.id">{{item.title}}</router-link>
+                      <!-- <a href="#/site/goodsinfo/90" class>{{item.title}}</a> -->
                       <span>{{item.add_time | formatTime}}</span>
                     </div>
                   </li>
@@ -203,7 +206,7 @@
 <script>
 
 //导入axios
-import axios from "axios";
+// import axios from "axios";
 import moment from "moment";
 export default {
 data(){
