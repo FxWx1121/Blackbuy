@@ -17,7 +17,7 @@
                 <el-carousel>
                   <el-carousel-item v-for="(item,index) in imglist" :key="index">
                     <!-- <h3>{{ item }}</h3> -->
-                    <img :src="item.thumb_path" alt="">
+                    <img :src="item.thumb_path" alt>
                   </el-carousel-item>
                 </el-carousel>
               </div>
@@ -102,6 +102,7 @@
                           sucmsg=" "
                           data-type="*10-1000"
                           nullmsg="请填写评论内容！"
+                          v-model="comment"
                         ></textarea>
                         <span class="Validform_checktip"></span>
                       </div>
@@ -112,6 +113,7 @@
                           type="submit"
                           value="提交评论"
                           class="submit"
+                          @click="postComment"
                         >
                         <span class="Validform_checktip"></span>
                       </div>
@@ -200,7 +202,9 @@ export default {
       hotgoodslist: [],
       num1: 1,
       //图片数组
-      imglist:[]
+      imglist: [],
+      //评论
+      comment: ""
     };
   },
   methods: {
@@ -212,14 +216,33 @@ export default {
           console.log(res);
           this.goodsinfo = res.data.message.goodsinfo;
           this.hotgoodslist = res.data.message.hotgoodslist;
-           this.imglist = res.data.message.imglist;
+          this.imglist = res.data.message.imglist;
         });
+    },
+    //计数器
+    handleChange() {
+      console.log("变了");
+    },
+    postComment(){
+      if(this.comment===''){
+        this.$message.error('请输入评论的内容');
+      }else{
+        //调用接口
+        this.$axios
+        .post(`site/validate/comment/post/goods/${this.$route.params.id}`,{
+          commenttxt:this.comment
+        })
+        .then(res=>{
+          if(res.data.status==0){
+            this.$message.success(res.data.message);
+            //清空
+            this.comment="";
+          }
+        })
+      }
     }
   },
-  //计数器
-  handleChange() {
-    console.log("变了");
-  },
+
   //过滤器
   // filters:{
   //     formatTime(value){
@@ -242,19 +265,19 @@ export default {
 </script>
 
 <style>
-.pic-box{
+.pic-box {
   width: 395px;
   height: 320px;
 }
-.pic-box .el-carousel{
+.pic-box .el-carousel {
   width: 100%;
   height: 100%;
 }
-.pic-box .el-carousel__container{
-   width: 100%;
+.pic-box .el-carousel__container {
+  width: 100%;
   height: 100%;
 }
-.pic-box .el-carousel__container img{
+.pic-box .el-carousel__container img {
   display: block;
   width: 100%;
   height: 100%;
