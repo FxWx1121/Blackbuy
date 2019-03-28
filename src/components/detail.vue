@@ -123,36 +123,31 @@
                     <p
                       style="margin: 5px 0px 15px 69px; line-height: 42px; text-align: center; border: 1px solid rgb(247, 247, 247);"
                     >暂无评论，快来抢沙发吧！</p>
-                    <li>
+                    <li v-for="item in commentList">
                       <div class="avatar-box">
                         <i class="iconfont icon-user-full"></i>
                       </div>
                       <div class="inner-box">
                         <div class="info">
-                          <span>匿名用户</span>
-                          <span>2017/10/23 14:58:59</span>
+                          <span>{{item.user_name}}</span>
+                          <span>{{item.add_time | globalFormatTime('YYYY-MM-DDTHH:mm:ss') }}</span>
                         </div>
-                        <p>testtesttest</p>
-                      </div>
-                    </li>
-                    <li>
-                      <div class="avatar-box">
-                        <i class="iconfont icon-user-full"></i>
-                      </div>
-                      <div class="inner-box">
-                        <div class="info">
-                          <span>匿名用户</span>
-                          <span>2017/10/23 14:59:36</span>
-                        </div>
-                        <p>很清晰调动单很清晰调动单</p>
+                        <p>{{item.content}}</p>
                       </div>
                     </li>
                   </ul>
                   <div class="page-box" style="margin: 5px 0px 0px 62px;">
                     <div id="pagination" class="digg">
-                      <span class="disabled">« 上一页</span>
-                      <span class="current">1</span>
-                      <span class="disabled">下一页 »</span>
+                      <!-- 饿了么分页 -->
+                      <el-pagination
+                        @size-change="handleSizeChange"
+                        @current-change="handleCurrentChange"
+                        :current-page="pageIndex"
+                        :page-sizes="[100, 200, 300, 400]"
+                        :page-size="pageSize"
+                        layout="total, sizes, prev, pager, next, jumper"
+                        :total="totalcount"
+                      ></el-pagination>
                     </div>
                   </div>
                 </div>
@@ -203,8 +198,16 @@ export default {
       num1: 1,
       //图片数组
       imglist: [],
-      //评论
-      comment: ""
+      //输入评论的内容
+      comment: "",
+      //页码数
+      pageIndex: 1,
+      //总页数
+      pageSize: 10,
+      //总条数
+      totalcount: 0,
+      //评论数组
+      commentList: []
     };
   },
   methods: {
@@ -221,25 +224,56 @@ export default {
     },
     //计数器
     handleChange() {
-      console.log("变了");
+      console.log("哈哈");
     },
-    postComment(){
-      if(this.comment===''){
-        this.$message.error('请输入评论的内容');
-      }else{
+    //评论内容
+    postComment() {
+      if (this.comment === "") {
+        this.$message.error("请输入评论的内容");
+      } else {
         //调用接口
         this.$axios
-        .post(`site/validate/comment/post/goods/${this.$route.params.id}`,{
-          commenttxt:this.comment
-        })
-        .then(res=>{
-          if(res.data.status==0){
-            this.$message.success(res.data.message);
-            //清空
-            this.comment="";
-          }
-        })
+          .post(`site/validate/comment/post/goods/${this.$route.params.id}`, {
+            commenttxt: this.comment
+          })
+          .then(res => {
+            if (res.data.status == 0) {
+              this.$message.success(res.data.message);
+              //清空
+              this.comment = "";
+              //默认显示第一页
+              this.pageIndex = 1;
+              //重新获取数据
+              this.getComments();
+            }
+          });
       }
+    },
+    //获取评论
+    getComments() {
+      this.$axios
+        .get(
+          `site/comment/getbypage/goods/${this.$route.params.id}?pageIndex=${
+            this.pageIndex
+          }&pageSize=${this.pageSize}`
+        )
+        .then(res => {
+          console.log(res);
+          this.totalcount = res.data.totalcount;
+          this.commentList = res.data.message;
+        });
+    },
+    //分页容量
+    handleSizeChange(size) {
+      this.pageSize = size;
+      //重新获取数据
+      this.getComments();
+    },
+    //页面改变
+    handleCurrentChange(current) {
+      this.pageIndex = current;
+      //重新获取数据
+      this.getComments();
     }
   },
 
@@ -252,6 +286,8 @@ export default {
   //获取数据
   created() {
     this.getDetail();
+    //获取评论
+    this.getComments();
   },
   //侦听器
   watch: {
