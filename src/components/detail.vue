@@ -13,7 +13,14 @@
         <div class="wrap-box">
           <div class="left-925">
             <div class="goods-box clearfix">
-              <div class="pic-box"></div>
+              <div class="pic-box">
+                <el-carousel>
+                  <el-carousel-item v-for="(item,index) in imglist" :key="index">
+                    <!-- <h3>{{ item }}</h3> -->
+                    <img :src="item.thumb_path" alt="">
+                  </el-carousel-item>
+                </el-carousel>
+              </div>
               <div class="goods-spec">
                 <h1>{{goodsinfo.title}}</h1>
                 <p class="subtitle">{{goodsinfo.sub_title}}</p>
@@ -191,7 +198,9 @@ export default {
       index: 1,
       //推荐商品
       hotgoodslist: [],
-      num1:1,
+      num1: 1,
+      //图片数组
+      imglist:[]
     };
   },
   methods: {
@@ -200,16 +209,16 @@ export default {
       this.$axios
         .get(`/site/goods/getgoodsinfo/${this.$route.params.id}`)
         .then(res => {
-          console.log(res.data.message);
+          console.log(res);
           this.goodsinfo = res.data.message.goodsinfo;
           this.hotgoodslist = res.data.message.hotgoodslist;
+           this.imglist = res.data.message.imglist;
         });
     }
   },
   //计数器
-  handleChange(){
-    console.log('变了');
-    
+  handleChange() {
+    console.log("变了");
   },
   //过滤器
   // filters:{
@@ -233,4 +242,21 @@ export default {
 </script>
 
 <style>
+.pic-box{
+  width: 395px;
+  height: 320px;
+}
+.pic-box .el-carousel{
+  width: 100%;
+  height: 100%;
+}
+.pic-box .el-carousel__container{
+   width: 100%;
+  height: 100%;
+}
+.pic-box .el-carousel__container img{
+  display: block;
+  width: 100%;
+  height: 100%;
+}
 </style>
