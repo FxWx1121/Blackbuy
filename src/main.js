@@ -12,6 +12,12 @@ import index from './components/index.vue'
 import cart from './components/cart.vue'
 import detail from './components/detail.vue'
 
+//统一设置axios
+import axios from 'axios'
+Vue.prototype.$axios =axios
+//设置基地址
+axios.defaults.baseURL = 'http://111.230.232.110:8899';
+
 //规则
 let routes=[
   {

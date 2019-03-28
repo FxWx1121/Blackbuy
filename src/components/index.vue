@@ -238,8 +238,8 @@ export default {
     }
   },
   created() {
-    axios
-      .get("http://111.230.232.110:8899/site/goods/gettopdata/goods")
+    this.$axios
+      .get("/site/goods/gettopdata/goods")
       .then(res => {
         console.log(res);
         //赋值
@@ -248,8 +248,8 @@ export default {
         this.toplist = res.data.message.toplist;
       }
     );
-    axios
-    .get('http://111.230.232.110:8899/site/goods/getgoodsgroup')
+    this.$axios
+    .get('/site/goods/getgoodsgroup')
     .then(res=>{
         console.log(res);
         this.goodsList=res.data.message
