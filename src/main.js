@@ -1,6 +1,14 @@
 import Vue from 'vue'
 import App from './App.vue'
 
+//饿了么ul
+//导入模块
+import ElementUI from 'element-ui';
+//导入样式
+import 'element-ui/lib/theme-chalk/index.css';
+//vue插件
+Vue.use(ElementUI);
+
 import  './assets/statics/site/css/style.css'
 
 //路由
