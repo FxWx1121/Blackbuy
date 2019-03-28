@@ -190,7 +190,7 @@
                     <div class="txt-box">
                       <router-link :to="'/detail/'+item.id">{{item.title}}</router-link>
                       <!-- <a href="#/site/goodsinfo/90" class>{{item.title}}</a> -->
-                      <span>{{item.add_time | formatTime}}</span>
+                      <span>{{item.add_time | globalFormatTime('YYYY年MM月DD日')}}</span>
                     </div>
                   </li>
                 </ul>
@@ -207,7 +207,7 @@
 
 //导入axios
 // import axios from "axios";
-import moment from "moment";
+// import moment from "moment";
 export default {
 data(){
     return{
@@ -219,11 +219,11 @@ data(){
     };
 },
 //过滤器
-filters:{
-    formatTime(value){
-        return moment(value).format("YYYY--MM--DD")
-    }
-},
+// filters:{
+//     formatTime(value){
+//         return moment(value).format("YYYY--MM--DD")
+//     }
+// },
 //获取数据
 created() {
     this.$axios

@@ -18,6 +18,18 @@ Vue.prototype.$axios =axios
 //设置基地址
 axios.defaults.baseURL = 'http://111.230.232.110:8899';
 
+//设置全局时间
+//导入moment.js
+import moment from "moment"
+Vue.filter('globalFormatTime',function(value,fmtTemplate){
+  if(fmtTemplate){
+    return moment(value).format(fmtTemplate)
+  }else{
+    return moment(value).format('YYYY-MM-DD')
+  }
+ 
+})
+
 //规则
 let routes=[
   {
