@@ -109,42 +109,15 @@
           <!--幻灯片-->
           <div class="left-705">
             <div class="banner-img">
-              <div id="focus-box" class="focus-box">
-                <ul class="slides">
-                  <li
-                    class
-                    style="width: 100%;height:100%; float: left; margin-right: -100%; position: relative; opacity: 0; display: block; z-index: 1;"
-                  >
-                    <a href="/goods.html">
-                      <img
-                        style="width: 100%;height:100%;"
-                        src="http://39.108.135.214:8899/imgs/SJ4EgwosX0wTqvyAvhtFGT1w.jpg"
-                        draggable="false"
-                      >
-                    </a>
-                  </li>
-                  <li
-                    style="width: 100%;height:100%; float: left; margin-right: -100%; position: relative; opacity: 1; display: block; z-index: 2;"
-                    class="flex-active-slide"
-                  >
-                    <a href="/goods.html">
-                      <img
-                        style="width: 100%;height:100%;"
-                        src="http://39.108.135.214:8899/upload/201504/20/thumb_201504200314272543.jpg"
-                        draggable="false"
-                      >
-                    </a>
-                  </li>
-                </ul>
-                <ol class="flex-control-nav flex-control-paging">
-                  <li>
-                    <a class>1</a>
-                  </li>
-                  <li>
-                    <a class="flex-active">2</a>
-                  </li>
-                </ol>
-              </div>
+              <!-- 使用饿了么走马灯 -->
+              <el-carousel height="341px">
+                <el-carousel-item v-for="(item,index) in sliderlist" :key="index">
+                  <!-- <h3>{{ item }}</h3> -->
+                  <router-link class="slider-a" :to="'/detail/'+item.id">
+                  <img class="slider-img" :src="item.img_url" alt="">
+                  </router-link>
+                </el-carousel-item>
+              </el-carousel>
             </div>
           </div>
           <!--/幻灯片-->
@@ -180,12 +153,10 @@
         <div class="wrap-box">
           <ul class="img-list">
             <li v-for="it in item.datas">
-                <router-link :to="'/detail/'+it.artID">
-              <!-- <a href="#/site/goodsinfo/87" class> -->
+              <router-link :to="'/detail/'+it.artID">
+                <!-- <a href="#/site/goodsinfo/87" class> -->
                 <div class="img-box">
-                  <img
-                    :src="it.img_url"
-                  >
+                  <img :src="it.img_url">
                 </div>
                 <div class="info">
                   <h3>{{it.artTitle}}</h3>
@@ -200,7 +171,7 @@
                     </span>
                   </p>
                 </div>
-              <!-- </a> -->
+                <!-- </a> -->
               </router-link>
             </li>
           </ul>
@@ -226,7 +197,7 @@ export default {
       //热卖数据
       toplist: [],
       //底部商品属性
-      goodsList:[],
+      goodsList: []
     };
   },
   // //过滤器
@@ -238,26 +209,31 @@ export default {
   //   }
   // },
   created() {
-    this.$axios
-      .get("/site/goods/gettopdata/goods")
-      .then(res => {
-        console.log(res);
-        //赋值
-        this.catelist = res.data.message.catelist;
-        this.sliderlist = res.data.message.sliderlist;
-        this.toplist = res.data.message.toplist;
-      }
-    );
-    this.$axios
-    .get('/site/goods/getgoodsgroup')
-    .then(res=>{
-        console.log(res);
-        this.goodsList=res.data.message
-        
-    })
+    this.$axios.get("/site/goods/gettopdata/goods").then(res => {
+      console.log(res);
+      //赋值
+      this.catelist = res.data.message.catelist;
+      this.sliderlist = res.data.message.sliderlist;
+      this.toplist = res.data.message.toplist;
+    });
+    this.$axios.get("/site/goods/getgoodsgroup").then(res => {
+      console.log(res);
+      this.goodsList = res.data.message;
+    });
   }
 };
 </script>
 
 <style>
+.slider-a{
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.slider-img{
+  display: block;
+  width: 100%;
+  height: 100%;
+
+}
 </style>
